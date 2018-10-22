@@ -16,8 +16,9 @@ const Deck = require('./Carddeck')
 let drawPile = new Deck()
 drawPile = drawPile.cardDeck
 
-console.log(drawPile)
-let hand = drawPile.pop()
+let hand = []
+
+hand = drawPile.pop()
 hand += drawPile.pop()
-console.log(drawPile)
 console.log(hand)
+console.log(drawPile.length)
