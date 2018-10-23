@@ -8,55 +8,57 @@
 
 'use strict'
 
-const Deck = require('./Carddeck')
+const Deck = require('./Deck')
 const DrawPile = require('./DrawPile')
 /**
  * A player that can recieve cards, count them and choose to take more cards or settle.
  * Should also be able to discard cards.
  */
 
-function Player (name) {
-  this.name = name
-  this.value = value
+function Player () {
+  // this.name = name
+  this.value = undefined
   this.hand = []
 }
-let deck3 = new Deck()
-deck3 = deck3.cardDeck
-let hand = deck3.pop()
 
-console.log(hand)
-
-let hand2 = deck3.pop()
-console.log(hand2)
-
-hand += deck3.pop()
-console.log(hand)
-
-function receieveCard(card){
-    if (!hand.isEmpty()){
-    if (card.isAce){
-
-        }
+Player.prototype.recieveCard = function (card) {
+  this.hand.push(card)
+  if (!this.hand.isEmpty()) {
+    if (card === 'A') {
+      if (this.value <= 7) {
+        card = 14
+      } else {
+        card = 1
+      }
     }
-    hand.push(card)
-
-    value = hand.reduce()
-}
-function makeMove(){
-
-}
-
-if(this.hand > 21) {
-    return 'Player loses!'
-}
-    else if (this.hand = 21) {
-        return 'Player wins!'
+    if (card === 'J') {
+      card = 11
     }
-    else if (this.hand >= 16)
+    if (card === 'Q') {
+      card = 12
+    }
+    if (card === 'K') {
+      card = 13
+    }
+  }
+  console.log(this.hand)
+  // this.hand.push(card)
+}
+Player.prototype.makeMove = function () {
+  this.value = this.hand.reduce()
+  while (this.hand.length > 2 > 5) {
+    if (this.value === 21) {
+      return `${this.name}: ${this.hand} (${value})`
+    } else if (value > 21) {
+      return `${this.name}: ${this.hand} (${value}) BUSTED!`
+    } else if (value >= 16) {
+      //  return player.satisfied
+    } else {
+      Player.recieveCard()
+    }
+  }
 
-
-// Player.prototype.count = function () {
-
-// }
+  // Player.prototype.count = function () {
+}
 
 module.exports = Player

@@ -1,7 +1,7 @@
 /**
- * Module for Carddeck.
+ * Module for Deck.
  *
- * @module src/Carddeck
+ * @module src/Deck
  * @author Melina Cirverius
  * @version 1.0
  */
@@ -19,7 +19,7 @@ class Deck {
       suit = suits[suit]
       for (let value in values) {
         value = values[value]
-        let card = new card(suit, value)
+        // let card = new Card(suit, value)
         this.cardDeck.push(`${value}${suit}`)
       }
     }
@@ -44,8 +44,9 @@ class Deck {
 
 let deck1 = new Deck()
 deck1.shuffle()
-deck1 = deck1.cardDeck
-let testCard = deck1.pop()
-console.log(testCard)
+console.log(deck1.cardDeck)
+
+// let testCard = deck1.pop()
+// console.log(testCard)
 
 module.exports = Deck

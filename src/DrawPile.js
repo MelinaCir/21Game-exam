@@ -8,17 +8,17 @@
 
 'use strict'
 
-const Deck = require('./Carddeck')
+const Deck = require('./Deck')
 /**
  *
  */
 
-let drawPile = new Deck()
-drawPile = drawPile.cardDeck
+// let drawPile = new Deck()
+// drawPile = drawPile.cardDeck
 
-let hand = []
+// let hand = []
 
-hand = drawPile.pop()
-hand += drawPile.pop()
-console.log(hand)
-console.log(drawPile.length)
+// hand = drawPile.pop()
+// hand += drawPile.pop()
+// console.log(hand)
+// console.log(drawPile.length)

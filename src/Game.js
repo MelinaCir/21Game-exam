@@ -1,7 +1,16 @@
+/**
+ * Module for Game.
+ *
+ * @module src/Game
+ * @author Melina Cirverius
+ * @version 1.0
+ */
+
 'use strict'
 
-const Deck = require('./Carddeck')
+const Deck = require('./Deck')
 const Player = require('./Player')
+
 // Start a game
 // boolean running = true
 // while (running)
@@ -14,6 +23,7 @@ const Player = require('./Player')
 function startGame () {
   let drawPile = new Deck()
   drawPile.shuffle()
+  drawPile = drawPile.cardDeck
 
   let discardPile = []
   let players = []
@@ -28,18 +38,15 @@ function startGame () {
   players.push(player4)
 
   for (let player in players) {
-    let card = Object.values(drawPile).pop()
+    let card = drawPile.pop()
     player.receieveCard(card)
   }
 
   for (let player in players) {
-    // försvinner keysen?
-    player.receieveCard(Object.values(drawPile).pop())
+    player.receieveCard(drawPile.pop())
     // nu sker hela omgången
-    // player.makeMove()
+    player.makeMove()
   }
-
-  console.log(players.length)
 }
 
 module.exports = startGame
