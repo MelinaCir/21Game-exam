@@ -15,7 +15,8 @@
 class Card {
   constructor () {
     this.card = []
-
+  }
+  getCards () {
     let suits = ['♣', '♦', '♥', '♠']
     let values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
@@ -27,6 +28,8 @@ class Card {
         this.card.push(`${value}${suit}`)
       }
     }
+
+    return this.card
   }
 }
 

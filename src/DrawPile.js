@@ -12,10 +12,16 @@ const Deck = require('./Deck')
 /**
  *
  */
+// class DrawPile {
+//   constructor () {
+//     this.drawPile = new Deck()
+//     this.drawPile = this.drawPile.cardDeck
+//     this.drawPile.shuffle()
+//   }
+// }
+// console.log(this.drawPile)
 
-// let drawPile = new Deck()
-// drawPile = drawPile.cardDeck
-
+// module.exports = DrawPile
 // let hand = []
 
 // hand = drawPile.pop()

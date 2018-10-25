@@ -7,6 +7,7 @@
  */
 
 'use strict'
+const Card = require('./Card')
 
 class Deck {
   constructor () {
@@ -44,7 +45,7 @@ class Deck {
 
 let deck1 = new Deck()
 deck1.shuffle()
-console.log(deck1.cardDeck)
+// console.log(deck1.cardDeck)
 
 // let testCard = deck1.pop()
 // console.log(testCard)
