@@ -20,6 +20,7 @@ function Player (nr) {
   this.nr = nr
   this.hand = []
   this.totalScore = 0
+  this.stillPlaying = true
 }
 
 // Player.prototype.recieveCard = function (card) {
@@ -29,8 +30,10 @@ function Player (nr) {
 
 // Hur ska jag korrekt skriva ut både kort och värde?
 Player.prototype.recieveCard = function (card) {
-  this.hand.push(card.value)
-  this.countCards(card)
+  if (this.hand.length < 4) {
+    this.hand.push(card)
+    this.countCards(card)
+  }
 }
 
 Player.prototype.countCards = function (card) {
@@ -52,21 +55,21 @@ Player.prototype.countCards = function (card) {
     }
   }
 }
+
 console.log(this.value)
 
 // this.hand.push(card)
 // }
 Player.prototype.makeMove = function () {
-  while (this.hand.length > 2 > 5) {
-    if (this.totalScore === 21) {
-      return `${this.name}: ${this.hand} (${this.value})`
-    } else if (this.value > 21) {
-      return `${this.name}: ${this.hand} (${this.value}) BUSTED!`
-    } else if (this.value >= 16) {
-      //  return player.satisfied
-    } else {
-      Player.recieveCard()
-    }
+  if (this.totalScore === 21 || (this.totalScore < 21 && this.hand.length === 5)) {
+    this.stillPlaying = false
+    return 'Win'
+  } else if (this.totalScore > 21) {
+    this.stillPlaying = false
+    return 'Lose'
+  } else if (this.totalScore >= 16) {
+    this.stillPlaying = false
+    return 'Satisfied'
   }
 }
 

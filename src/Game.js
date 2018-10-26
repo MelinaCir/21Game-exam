@@ -10,6 +10,7 @@
 
 const Deck = require('./Deck')
 const Player = require('./Player')
+const Dealer = require('./Dealer')
 
 // Start a game
 // boolean running = true
@@ -22,11 +23,13 @@ const Player = require('./Player')
 
 function startGame (amountOfPlayers = 0) {
   this.amountOfPlayers = amountOfPlayers
-  //   this.players = players
-  // this._player = new Player () ??
+
   var drawPile = new Deck()
   drawPile.shuffle()
+
   let players = []
+  var discardPile = []
+  var dealer = new Dealer()
 
   for (let i = 0; i < amountOfPlayers; i++) {
     let player = new Player(i + 1)
@@ -37,30 +40,53 @@ function startGame (amountOfPlayers = 0) {
     let card = drawPile.cardDeck.pop()
     player.recieveCard(card)
   }
-  var stillPlaying = false
   for (let player of players) {
-    stillPlaying = true
-
-    while (stillPlaying && player.hand.length <= 5) {
+    while (player.stillPlaying && player.hand.length <= 5) {
       player.recieveCard(drawPile.cardDeck.pop())
+      let result = player.makeMove()
+      let dealersTurn = evaluateMove(result, player)
 
-      if (player.totalScore === 21) {
-        console.log('Player wins')
-        stillPlaying = false
-      } else if (player.totalScore > 21) {
-        console.log('Player loses')
-        stillPlaying = false
-      } else if (player.totalScore >= 16) {
-      // Dealer plays
-        stillPlaying = false
+      if (dealersTurn) {
+        dealersTurn = false
+        dealer.recieveCard(drawPile.card.pop())
+        let result = dealer.makeMove()
+
+        if (result === 'Satisfied') {
+          if (player.totalScore <= dealer.totalScore) {
+            console.log('Dealer wins')
+            dealersTurn = false
+          } else {
+            console.log('Player wins')
+            dealersTurn = false
+          }
+        } else {
+          evaluateMove(result, dealer)
+          dealersTurn = false
+        }
       }
     }
   }
+  function evaluateMove (result, temp) {
+    if (result === 'Win') {
+      console.log(temp.name + ' wins')
+      discardPile.push(temp.hand)
+      return false
+    } else if (result === 'Lose') {
+      console.log(temp.name + 'loses')
+      discardPile.push(temp.hand)
+      return false
+    } else if (result === 'Satisfied' && temp.name === 'player') {
+      return true
+    }
 
-  console.log(players)
-
-  let discardPile = []
+    console.log(players)
+    console.log(dealer)
+  }
 }
+// function dealerPlays () {
+//   let dealer = new Dealer()
+//   dealer
+// }
 
 //   for (let player in players) {
 //     player.receieveCard(drawPile.pop())
