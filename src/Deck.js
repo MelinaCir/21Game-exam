@@ -3,7 +3,7 @@
  *
  * @module src/Deck
  * @author Melina Cirverius
- * @version 1.0
+ * @version 1.0.0
  */
 
 'use strict'
@@ -12,7 +12,10 @@ const Card = require('./Card')
 class Deck {
   constructor () {
     this.cardDeck = []
+    this.createCards()
+  }
 
+  createCards () {
     let suits = ['♣', '♦', '♥', '♠']
     let values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
@@ -20,8 +23,8 @@ class Deck {
       suit = suits[suit]
       for (let value in values) {
         value = values[value]
-        // let card = new Card(suit, value)
-        this.cardDeck.push(`${value}${suit}`)
+        let card = new Card(suit, value)
+        this.cardDeck.push(card)
       }
     }
   }
@@ -39,12 +42,12 @@ class Deck {
       deck[card] = deck[i]
       deck[i] = temp
     }
-    return this
+    return this.cardDeck
   }
 }
 
-let deck1 = new Deck()
-deck1.shuffle()
+// let deck1 = new Deck()
+// deck1.shuffle()
 // console.log(deck1.cardDeck)
 
 // let testCard = deck1.pop()

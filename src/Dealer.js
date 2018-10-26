@@ -3,7 +3,7 @@
  *
  * @module src/Dealer
  * @author Melina Cirverius
- * @version 1.0
+ * @version 1.0.0
  */
 
 'use strict'
