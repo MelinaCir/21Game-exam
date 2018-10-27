@@ -1,5 +1,5 @@
 /**
- * The start of the application.
+ * The starting point of the application.
  *
  * @author Melina Cirverius
  * @version 1.0.0
@@ -7,6 +7,6 @@
 
 'use strict'
 
-const Game = require('./src/Game')
+const startGame = require('./src/startGame')
 
-Game.startGame(2)
+startGame.startGame(6)

@@ -46,11 +46,4 @@ class Deck {
   }
 }
 
-// let deck1 = new Deck()
-// deck1.shuffle()
-// console.log(deck1.cardDeck)
-
-// let testCard = deck1.pop()
-// console.log(testCard)
-
 module.exports = Deck

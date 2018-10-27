@@ -8,9 +8,6 @@
 
 'use strict'
 
-const Deck = require('./Deck')
-const DrawPile = require('./DrawPile')
-const Card = require('./Card')
 /**
  * A player that can recieve cards, count them and choose to take more cards or settle.
  * Should also be able to discard cards.
@@ -22,11 +19,6 @@ function Player (nr) {
   this.totalScore = 0
   this.stillPlaying = true
 }
-
-// Player.prototype.recieveCard = function (card) {
-//   this.card = card
-//   this.hand.push(card)
-// }
 
 // Hur ska jag korrekt skriva ut både kort och värde?
 Player.prototype.recieveCard = function (card) {
@@ -58,8 +50,6 @@ Player.prototype.countCards = function (card) {
 
 console.log(this.value)
 
-// this.hand.push(card)
-// }
 Player.prototype.makeMove = function () {
   if (this.totalScore === 21 || (this.totalScore < 21 && this.hand.length === 5)) {
     this.stillPlaying = false
@@ -73,11 +63,10 @@ Player.prototype.makeMove = function () {
   }
 }
 
-// Player.prototype.win = function () {
-//   return `${this.name}: ${this.hand} (${this.value})`
-// }
-
-// Player.prototype.count = function () {
-// }
+Player.prototype.toString = function () {
+  return `Player#:${this.nr} ${this.hand.forEach(function (card) {
+    return card.value
+  })} (${this.totalScore})`
+}
 
 module.exports = Player

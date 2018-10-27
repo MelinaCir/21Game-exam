@@ -16,6 +16,9 @@ const Player = require('./Player')
 
 function Dealer () {
   Player.call(this)
+  this.stillPlaying = false
 }
+Dealer.prototype = Object.create(Player.prototype)
+Dealer.prototype.constructor = Dealer
 
 module.exports = Dealer
