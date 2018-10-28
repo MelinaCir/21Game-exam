@@ -13,48 +13,53 @@ const Player = require('./Player')
 const Dealer = require('./Dealer')
 
 /**
+ * Starts a game with the given numbers of players.
+ * Gives every player a first card before starting the first round with the first player.
  *
- * @param {number} amountOfPlayers
+ * @param {number} amountOfPlayers - The amount of players in the game.
  */
-
-function startGame (amountOfPlayers = 0) {
+function startGame (amountOfPlayers = 1) {
   this.amountOfPlayers = amountOfPlayers
 
   var drawPile = new Deck()
   drawPile.createCards()
   drawPile.shuffle()
 
-  let players = []
   var discardPile = new Deck()
+  let players = []
   let dealer = new Dealer()
 
+  // Sets a number for each player of the current game.
   for (let i = 0; i < amountOfPlayers; i++) {
     let player = new Player(i + 1)
     players.push(player)
   }
 
+  // Each player recieves a first card.
   for (let player of players) {
     if (drawPile.cardDeck.length > 1) {
       let card = drawPile.cardDeck.pop()
       player.recieveCard(card)
     } else {
-      newDrawdeck()
+      newDrawPile()
     }
   }
 
+  // Player's turn.
   for (var player of players) {
     while (player.stillPlaying && player.hand.length < 5) {
       if (drawPile.cardDeck.length > 1) {
         player.recieveCard(drawPile.cardDeck.pop())
-        let result = player.makeMove()
+        let result = player.makeMove(12)
         evaluateMove(result, player)
       } else {
-        newDrawdeck()
+        newDrawPile()
       }
+      // Dealer's turn.
       while (dealer.stillPlaying && dealer.hand.length < 5) {
         if (drawPile.cardDeck.length > 1) {
           dealer.recieveCard(drawPile.cardDeck.pop())
-          let result = dealer.makeMove()
+          let result = dealer.makeMove(15)
           evaluateMove(result, dealer)
 
           if (result === 'Satisfied') {
@@ -67,34 +72,38 @@ function startGame (amountOfPlayers = 0) {
             }
           }
         } else {
-          newDrawdeck()
+          newDrawPile()
         }
       }
     }
   }
-  /**
-  *
-  * @param {*} result
-  * @param {*} temp
-  */
 
-  function evaluateMove (result, temp) {
+  /**
+  * Evalutes the return value after a move.
+  * Either ends the round and prints out the result,
+  * or give the turn over to the dealer.
+  *
+  * @param {string} result
+  * @param {Object} gamer
+  */
+  function evaluateMove (result, gamer) {
     if (result === 'Win') {
-      console.log(roundResults(result, temp))
-      temp.resetHand()
+      console.log(roundResults(result, gamer))
+      gamer.resetHand()
     } else if (result === 'Lose') {
-      console.log(roundResults(result, temp))
-      temp.resetHand()
-    } else if (result === 'Satisfied' && temp instanceof Player) {
+      console.log(roundResults(result, gamer))
+      gamer.resetHand()
+    } else if (result === 'Satisfied' && gamer instanceof Player) {
       dealer.stillPlaying = true
     }
   }
 
   /**
-   *
+   * Creates a new draw pile using the last card from the previous draw pile
+   * as well as the discard pile.
+   * Also reset the discard pile to an empty object.
    */
-
-  function newDrawdeck () {
+  function newDrawPile () {
     let lastCard = drawPile.cardDeck.pop()
     discardPile.cardDeck.push(lastCard)
     discardPile.shuffle()
@@ -103,16 +112,18 @@ function startGame (amountOfPlayers = 0) {
   }
 
   /**
+   * Returns a string representing the results of the finished round.
+   * Discards the used cards from both player and dealer.
    *
-   * @param {*} result
-   * @param {*} temp
+   * @param {string} result
+   * @param {Object} gamer
+   * @returns {string} - A string representing the results of the round.
    */
-
-  function roundResults (result, temp) {
+  function roundResults (result, gamer) {
     discardPile.cardDeck = discardPile.cardDeck.concat(player.hand)
     discardPile.cardDeck = discardPile.cardDeck.concat(dealer.hand)
 
-    if (result === 'Lose' && temp instanceof Dealer) {
+    if (result === 'Lose' && gamer instanceof Dealer) {
       return player.toString() + '\n' +
         dealer.toString() + '\n' + 'Player wins!'
     } else if (result === 'Lose') {
@@ -121,9 +132,10 @@ function startGame (amountOfPlayers = 0) {
     } else {
       return player.toString() +
       '\n' + dealer.toString() +
-      '\n' + `${temp.name} Wins!`
+      '\n' + `${gamer.name} Wins!`
     }
   }
 }
 
+// Exports
 module.exports.startGame = startGame
