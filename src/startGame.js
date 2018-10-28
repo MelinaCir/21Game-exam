@@ -12,23 +12,20 @@ const Deck = require('./Deck')
 const Player = require('./Player')
 const Dealer = require('./Dealer')
 
-// Start a game
-// boolean running = true
-// while (running)
-//
-// { ... running = false}
-// Hand out cards to players
-// Discard cards
-//
+/**
+ *
+ * @param {number} amountOfPlayers
+ */
 
 function startGame (amountOfPlayers = 0) {
   this.amountOfPlayers = amountOfPlayers
 
   var drawPile = new Deck()
+  drawPile.createCards()
   drawPile.shuffle()
 
   let players = []
-  var discardPile = []
+  var discardPile = new Deck()
   let dealer = new Dealer()
 
   for (let i = 0; i < amountOfPlayers; i++) {
@@ -37,57 +34,94 @@ function startGame (amountOfPlayers = 0) {
   }
 
   for (let player of players) {
-    let card = drawPile.cardDeck.pop()
-    player.recieveCard(card)
+    if (drawPile.cardDeck.length > 1) {
+      let card = drawPile.cardDeck.pop()
+      player.recieveCard(card)
+    } else {
+      newDrawdeck()
+    }
   }
 
-  for (let player of players) {
-    while (player.stillPlaying && player.hand.length <= 5) {
-      player.recieveCard(drawPile.cardDeck.pop())
-      let result = player.makeMove()
-      evaluateMove(result, player)
+  for (var player of players) {
+    while (player.stillPlaying && player.hand.length < 5) {
+      if (drawPile.cardDeck.length > 1) {
+        player.recieveCard(drawPile.cardDeck.pop())
+        let result = player.makeMove()
+        evaluateMove(result, player)
+      } else {
+        newDrawdeck()
+      }
+      while (dealer.stillPlaying && dealer.hand.length < 5) {
+        if (drawPile.cardDeck.length > 1) {
+          dealer.recieveCard(drawPile.cardDeck.pop())
+          let result = dealer.makeMove()
+          evaluateMove(result, dealer)
 
-      while (dealer.stillPlaying && dealer.hand.length <= 5) {
-        dealer.recieveCard(drawPile.cardDeck.pop())
-        let result = dealer.makeMove()
-        evaluateMove(result, dealer)
-
-        if (result === 'Satisfied') {
-          if (player.totalScore <= dealer.totalScore) {
-            console.log('Dealer wins')
-            discardPile.push(player.hand)
-            discardPile.push(dealer.hand)
-            dealer.hand = []
-            dealer.totalScore = 0
-            dealer.stillPlaying = false
-          } else if (player.totalScore > dealer.totalScore) {
-            console.log('Dealer loses')
-            discardPile.push(player.hand)
-            discardPile.push(dealer.hand)
-            dealer.hand = []
-            dealer.totalScore = 0
-            dealer.stillPlaying = false
+          if (result === 'Satisfied') {
+            if (player.totalScore <= dealer.totalScore) {
+              console.log(roundResults(result, dealer))
+              dealer.resetHand()
+            } else if (player.totalScore > dealer.totalScore) {
+              console.log(roundResults(result, player))
+              dealer.resetHand()
+            }
           }
+        } else {
+          newDrawdeck()
         }
       }
     }
   }
+  /**
+  *
+  * @param {*} result
+  * @param {*} temp
+  */
 
   function evaluateMove (result, temp) {
     if (result === 'Win') {
-      console.log(temp.toString())
-      discardPile.push(temp.hand)
-      temp.hand = []
-      temp.totalScore = 0
-      temp.stillPlaying = false
+      console.log(roundResults(result, temp))
+      temp.resetHand()
     } else if (result === 'Lose') {
-      console.log(temp.toString())
-      discardPile.push(temp.hand)
-      temp.totalScore = 0
-      temp.hand = []
-      temp.stillPlaying = false
+      console.log(roundResults(result, temp))
+      temp.resetHand()
     } else if (result === 'Satisfied' && temp instanceof Player) {
       dealer.stillPlaying = true
+    }
+  }
+
+  /**
+   *
+   */
+
+  function newDrawdeck () {
+    let lastCard = drawPile.cardDeck.pop()
+    discardPile.cardDeck.push(lastCard)
+    discardPile.shuffle()
+    drawPile.cardDeck = discardPile.cardDeck
+    discardPile = new Deck()
+  }
+
+  /**
+   *
+   * @param {*} result
+   * @param {*} temp
+   */
+
+  function roundResults (result, temp) {
+    discardPile.cardDeck = discardPile.cardDeck.concat(player.hand)
+    discardPile.cardDeck = discardPile.cardDeck.concat(dealer.hand)
+
+    if (result === 'Lose' && temp instanceof Dealer) {
+      return player.toString() + '\n' +
+        dealer.toString() + '\n' + 'Player wins!'
+    } else if (result === 'Lose') {
+      return player.toString() + '\n' +
+        dealer.toString() + '\n' + 'Dealer wins!'
+    } else {
+      return player.toString() +
+      '\n' + dealer.toString() +
+      '\n' + `${temp.name} Wins!`
     }
   }
 }

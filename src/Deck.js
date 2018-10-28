@@ -12,7 +12,6 @@ const Card = require('./Card')
 class Deck {
   constructor () {
     this.cardDeck = []
-    this.createCards()
   }
 
   createCards () {
