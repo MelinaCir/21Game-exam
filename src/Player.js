@@ -26,7 +26,7 @@ function Player (nr) {
   /**
    * The player's hand.
    *
-   * @type {Oject}
+   * @type {Array}
    */
   this.hand = []
 
@@ -58,7 +58,7 @@ Player.prototype.recieveCard = function (card) {
 }
 
 /**
- * Converts an object with a non-numeric value to a numeric value.
+ * Converts an card with a non-numeric value to a numeric value.
  * Adds the value of an object to current object's total score.
  *
  * @param {Object} card - An object representing a card.
@@ -85,7 +85,7 @@ Player.prototype.countCards = function (card) {
 
 /**
  * Checks the total score of the current object.
- * Returns a string representing the current objects's state.
+ * Returns a string representing the current object's state.
  *
  * @param {number} sum - The value deciding when the current object settles.
  * @returns {string} - A string representing the current object's state.

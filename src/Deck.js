@@ -24,11 +24,11 @@ class Deck {
    */
   constructor () {
     /**
-     * The carddeck holding the cards.
+     * The deck holding the cards.
      *
      * @type {array}
      */
-    this.cardDeck = []
+    this.deck = []
   }
 
   /**
@@ -44,7 +44,7 @@ class Deck {
       for (let value in values) {
         value = values[value]
         let card = new Card(suit, value)
-        this.cardDeck.push(card)
+        this.deck.push(card)
       }
     }
   }
@@ -54,7 +54,7 @@ class Deck {
   * @returns {array} - An array with cards in a shuffled order.
   */
   shuffle () {
-    let deck = this.cardDeck
+    let deck = this.deck
     let card = deck.length
     let i
     let temp
@@ -66,7 +66,7 @@ class Deck {
       deck[card] = deck[i]
       deck[i] = temp
     }
-    return this.cardDeck
+    return this.deck
   }
 }
 

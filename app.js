@@ -9,4 +9,4 @@
 
 const startGame = require('./src/startGame')
 
-startGame.startGame(20)
+startGame.startGame(25)

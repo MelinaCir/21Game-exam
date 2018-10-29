@@ -35,16 +35,5 @@ function Dealer () {
 Dealer.prototype = Object.create(Player.prototype)
 Dealer.prototype.constructor = Dealer
 
-/**
- * Returns a string representing the current object.
- *
- * @returns {string} - A string representing the current object.
- */
-Dealer.prototype.toString = function () {
-  return `Dealer: ` +
-        this.hand.map((card) => `${card.suit}${card.value}`) +
-        ` (${this.totalScore})`
-}
-
 // Exports
 module.exports = Dealer
