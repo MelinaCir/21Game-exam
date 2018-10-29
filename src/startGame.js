@@ -21,6 +21,8 @@ const Dealer = require('./Dealer')
 function startGame (amountOfPlayers = 1) {
   this.amountOfPlayers = amountOfPlayers
 
+  checkErrors(amountOfPlayers)
+
   let drawPile = new Deck()
   drawPile.createCards()
   drawPile.shuffle()
@@ -135,6 +137,22 @@ function startGame (amountOfPlayers = 1) {
       '\n' + dealer.toString() +
       '\n' + `${gamer.name} wins!` + '\n'
     }
+  }
+}
+
+/**
+ * Tests the parameter for errors and throws exceptions.
+ *
+ * @param {number} amountOfPlayers The set of data to be analyzed.
+ * @throws {TypeError} The amount of players is not a valid number!
+ * @throws {Error} Too many players!
+ */
+function checkErrors (amountOfPlayers) {
+  if (typeof amountOfPlayers !== 'number') {
+    throw new TypeError('The amount of players is not a valid number!')
+  }
+  if (amountOfPlayers > 44) {
+    throw new Error('Too many players!')
   }
 }
 
